@@ -7108,29 +7108,70 @@ body {
   }
 }
 
-/* Copy-email button (Lucide "copy" icon) in the nav pill. It reuses the nav
-   icon styling; the button reset is only to strip default button chrome. The
-   icon swaps to a check for a moment after copying. */
-.nav-copy {
+/* Copy-email pill: the address as text with a Lucide copy icon, sitting left
+   of "Book a call". It is the secondary action, so it mirrors the CTA's shape
+   (same padding, fully rounded) with a translucent cream fill instead of a
+   solid one, and the label stays lowercase because it is an address. The icon
+   swaps to a check for a moment after copying. */
+.nav-email {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 13px;
+  margin: 0;
   border: 0;
-  background: transparent;
+  border-radius: 40px;
+  background-color: rgba(244, 243, 238, .14);
+  color: var(--white);
   font: inherit;
   cursor: pointer;
   -webkit-appearance: none;
   appearance: none;
+  transition: background-color .2s ease;
 }
 
-.nav-copy .nav-copy-done,
-.nav-copy.is-copied .nav-copy-icon {
+.nav-email .navbar-label {
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.nav-email .navbar-label:hover {
+  opacity: 1;
+}
+
+.nav-email-icon {
+  display: block;
+  flex: none;
+  width: 14px;
+  max-width: none;
+  height: 14px;
+  opacity: var(--dim);
+  transition: opacity .2s ease;
+}
+
+.nav-email:hover,
+.nav-email.is-copied {
+  background-color: rgba(244, 243, 238, .24);
+}
+
+.nav-email:hover .nav-email-icon,
+.nav-email:focus-visible .nav-email-icon,
+.nav-email.is-copied .nav-email-icon {
+  opacity: 1;
+}
+
+.nav-email:focus-visible {
+  outline: 1px solid var(--white);
+  outline-offset: 2px;
+}
+
+.nav-email .nav-copy-done,
+.nav-email.is-copied .nav-copy-icon {
   display: none;
 }
 
-.nav-copy.is-copied .nav-copy-done {
+.nav-email.is-copied .nav-copy-done {
   display: block;
-}
-
-.nav-copy.is-copied {
-  opacity: 1;
 }
 
 .nav-copy-status {
@@ -7142,9 +7183,27 @@ body {
   white-space: nowrap;
 }
 
-/* Lucide icons fill their 24-unit canvas edge to edge, unlike the padded
-   16-unit nav icons, so draw them smaller to match the optical size. */
-.nav-copy .nav-icon {
-  width: 18px;
-  height: 18px;
+.nav-cta .navbar-label {
+  white-space: nowrap;
+}
+
+/* On phones the pill has no room for the address, so it collapses to the copy
+   icon alone (the button keeps its aria-label with the full address). */
+@media screen and (max-width: 479px) {
+  .nav-email {
+    padding: 7px 9px;
+  }
+
+  .nav-email .navbar-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .nav-email-icon {
+    width: 16px;
+    height: 16px;
+  }
 }
