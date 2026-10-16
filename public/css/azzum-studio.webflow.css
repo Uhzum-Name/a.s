@@ -7187,23 +7187,16 @@ body {
   white-space: nowrap;
 }
 
-/* On phones the pill has no room for the address, so it collapses to the copy
-   icon alone (the button keeps its aria-label with the full address). */
-@media screen and (max-width: 479px) {
-  .nav-email {
-    padding: 7px 9px;
-  }
+/* Hero actions: "Book a call" and the copy-email pill side by side. The
+   spacing the lone button had above it moves to the row. */
+.hero-actions {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: stretch;
+  gap: 8px;
+  margin-top: 20px;
+}
 
-  .nav-email .navbar-label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-  }
-
-  .nav-email-icon {
-    width: 16px;
-    height: 16px;
-  }
+.hero-actions .navbar-label.home {
+  margin-top: 0;
 }
