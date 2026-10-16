@@ -7107,3 +7107,44 @@ body {
     display: none;
   }
 }
+
+/* Copy-email button (Lucide "copy" icon) in the nav pill. It reuses the nav
+   icon styling; the button reset is only to strip default button chrome. The
+   icon swaps to a check for a moment after copying. */
+.nav-copy {
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.nav-copy .nav-copy-done,
+.nav-copy.is-copied .nav-copy-icon {
+  display: none;
+}
+
+.nav-copy.is-copied .nav-copy-done {
+  display: block;
+}
+
+.nav-copy.is-copied {
+  opacity: 1;
+}
+
+.nav-copy-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Lucide icons fill their 24-unit canvas edge to edge, unlike the padded
+   16-unit nav icons, so draw them smaller to match the optical size. */
+.nav-copy .nav-icon {
+  width: 18px;
+  height: 18px;
+}

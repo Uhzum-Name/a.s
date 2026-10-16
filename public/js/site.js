@@ -283,6 +283,44 @@
       );
     }
 
+    // Copy-email button in the nav: copies the address, swaps the icon to a
+    // check for a moment and announces it to screen readers.
+    document.querySelectorAll('[data-copy-email]').forEach(function (btn) {
+      var email = btn.getAttribute('data-copy-email');
+      var status = btn.querySelector('.nav-copy-status');
+      var timer;
+      var done = function () {
+        btn.classList.add('is-copied');
+        btn.setAttribute('title', 'Copied');
+        if (status) status.textContent = 'Email copied to clipboard';
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          btn.classList.remove('is-copied');
+          btn.setAttribute('title', 'Copy email');
+          if (status) status.textContent = '';
+        }, 1800);
+      };
+      var fallback = function () {
+        var ta = document.createElement('textarea');
+        ta.value = email;
+        ta.setAttribute('readonly', '');
+        ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          if (document.execCommand('copy')) done();
+        } catch (e) {}
+        document.body.removeChild(ta);
+      };
+      btn.addEventListener('click', function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(email).then(done, fallback);
+        } else {
+          fallback();
+        }
+      });
+    });
+
     // Links to the page you are already on (Home icon / name on the home page)
     // scroll to the top instead of reloading the page.
     document.querySelectorAll('a[aria-current="page"]').forEach(function (a) {
