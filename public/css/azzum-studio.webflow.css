@@ -7200,3 +7200,32 @@ body {
 .hero-actions .navbar-label.home {
   margin-top: 0;
 }
+
+/* Capabilities: header, one-line intro, then three columns (stacked on
+   narrower screens). The headline in each column is the pitch; the mono label
+   above it names the discipline. */
+.capabilities-intro {
+  max-width: 52ch;
+}
+
+.capabilities-columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px 24px;
+  align-self: stretch;
+  margin-top: 16px;
+}
+
+.capabilities-headline {
+  color: var(--white);
+  font-family: Ppneuemontreal, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+@media screen and (max-width: 991px) {
+  .capabilities-columns {
+    grid-template-columns: 1fr;
+  }
+}
