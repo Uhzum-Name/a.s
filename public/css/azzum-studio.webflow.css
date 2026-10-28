@@ -7509,19 +7509,42 @@ body {
   }
 }
 
+/* !important: the layout's global ul / li rules (for the case-study lists) are
+   !important too and would otherwise bring back the native disc and indent. */
 .engagement-list {
   display: flex;
   flex-flow: column;
-  gap: 8px;
+  gap: 4px;
   margin: 0;
-  padding-left: 18px;
-  list-style: disc;
+  padding: 0 !important;
+  list-style: none !important;
 }
 
+/* Bullet sits flush with the left edge of the copy above it; wrapped lines
+   hang under the text, not under the bullet. */
 .engagement-list li {
-  padding-left: 2px;
+  display: flex !important;
+  align-items: baseline;
+  gap: 10px;
+  padding: 0;
+  list-style: none !important;
 }
 
-.engagement-list li::marker {
-  color: rgba(244, 243, 238, .5);
+/* A drawn dot rather than a glyph, so it renders the same in every font. */
+.engagement-list li::before {
+  content: "";
+  flex: none;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: rgba(244, 243, 238, .6);
+  transform: translateY(-.25em);
+}
+
+/* Section headers and their supporting copy, below the case studies, are
+   centred (text and block). Cards keep their own left-aligned content. */
+.hero-7.btm .hero-grid > .h6-regular,
+.hero-7.btm .hero-grid > .capabilities-intro {
+  align-self: center;
+  text-align: center;
 }
