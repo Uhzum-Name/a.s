@@ -7568,7 +7568,7 @@ body {
   text-align: center;
 }
 
-/* Capability card icon: a dotted graphic between the eyebrow and the title,
+/* Capability card icon: a dotted graphic at the top of the card, above the eyebrow and title pair,
    running the full width of the card (it bleeds out through the card padding).
    It is cropped to 5:4 from the top of its square canvas, which only trims the
    empty margin around the dots. Every card has the icon row (empty until its
@@ -7580,7 +7580,7 @@ img.capabilities-icon {
   max-width: none;
   height: auto;
   aspect-ratio: 5 / 4;
-  margin: 8px -22px;
+  margin: 0 -22px 8px;
   object-fit: cover;
   object-position: 50% 30%;
 }
