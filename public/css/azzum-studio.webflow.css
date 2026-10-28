@@ -7248,24 +7248,35 @@ body {
   font-size: 14px;
 }
 
-/* Side by side, the three cards share their rows (eyebrow / title / body), so
-   a longer eyebrow that wraps in one card cannot push its title out of line
-   with the others. */
+/* Bento: the first two cards sit side by side and share their rows (icon /
+   eyebrow / title / copy), so a longer eyebrow that wraps in one cannot push
+   its title out of line with the other. The third card runs the full width
+   underneath. */
 @media screen and (min-width: 992px) {
   .capabilities-columns {
-    grid-template-rows: auto auto auto 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: auto auto auto 1fr auto;
     row-gap: 6px;
   }
 
-  .capabilities-columns > .div-block-24 {
+  .capabilities-columns > .div-block-24:nth-child(-n + 2) {
     display: grid;
     grid-row: span 4;
     grid-template-rows: subgrid;
     row-gap: 6px;
   }
 
+  .capabilities-columns > .div-block-24:nth-child(3) {
+    grid-column: 1 / -1;
+    margin-top: 10px;
+  }
+
   .capabilities-columns > .div-block-24 > .body-large {
     margin-top: 8px;
+  }
+
+  .capabilities-columns > .div-block-24:nth-child(3) > .body-large {
+    max-width: 60ch;
   }
 }
 
