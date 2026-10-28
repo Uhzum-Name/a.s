@@ -7585,6 +7585,12 @@ img.capabilities-icon {
   object-position: 50% 30%;
 }
 
+/* The dotted icon's art sits in the upper part of its canvas; the Depth icon
+   is centred, so it is cropped from the middle instead. */
+img.capabilities-icon-depth {
+  object-position: 50% 50%;
+}
+
 div.capabilities-icon {
   display: block;
 }

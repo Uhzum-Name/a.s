@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" fill="none" stroke="#fff" stroke-width="1.25" stroke-linecap="round" role="img" aria-label="Depth">
+  <line stroke-opacity=".3" stroke-dasharray="3 3" x1="25" y1="25" x2="85.49" y2="85.49"/>
+  <line stroke-opacity=".3" stroke-dasharray="3 3" x1="175" y1="25" x2="114.51" y2="85.49"/>
+  <line stroke-opacity=".3" stroke-dasharray="3 3" x1="175" y1="175" x2="114.51" y2="114.51"/>
+  <line stroke-opacity=".3" stroke-dasharray="3 3" x1="25" y1="175" x2="85.49" y2="114.51"/>
+  <line stroke-opacity=".55" x1="100" y1="25" x2="100" y2="85.49"/>
+  <line stroke-opacity=".55" x1="175" y1="100" x2="114.51" y2="100"/>
+  <line stroke-opacity=".55" x1="100" y1="175" x2="100" y2="114.51"/>
+  <line stroke-opacity=".55" x1="25" y1="100" x2="85.49" y2="100"/>
+  <rect stroke-opacity="1" x="25" y="25" width="150" height="150"/>
+  <rect stroke-opacity=".55" x="46" y="46" width="108" height="108"/>
+  <rect stroke-opacity=".55" x="61.12" y="61.12" width="77.76" height="77.76"/>
+  <rect stroke-opacity=".55" x="72.01" y="72.01" width="55.99" height="55.99"/>
+  <rect stroke-opacity=".55" x="79.84" y="79.84" width="40.31" height="40.31"/>
+  <rect stroke-opacity="1" x="85.49" y="85.49" width="29.02" height="29.02"/>
+</svg>
