@@ -321,6 +321,87 @@
       });
     });
 
+    // Testimonial carousel: the active card sits centred and the cards either
+    // side stay in view, dimmed and softly blurred (all of that is CSS keyed
+    // off the data-pos attribute set here). Prev / next buttons, arrow keys,
+    // click on a neighbour and swipe / drag all move it.
+    document.querySelectorAll('[data-carousel]').forEach(function (root) {
+      var viewport = root.querySelector('.tcarousel-viewport');
+      var track = root.querySelector('.tcarousel-track');
+      var slides = Array.prototype.slice.call(root.querySelectorAll('.tcarousel-slide'));
+      var prev = root.querySelector('[data-carousel-prev]');
+      var next = root.querySelector('[data-carousel-next]');
+      var current = root.querySelector('[data-carousel-current]');
+      var index = 0;
+
+      function go(i) {
+        index = Math.max(0, Math.min(slides.length - 1, i));
+        root.style.setProperty('--i', index);
+        slides.forEach(function (slide, n) {
+          var d = n - index;
+          slide.setAttribute('data-pos', d === 0 ? 'active' : d === -1 ? 'prev' : d === 1 ? 'next' : d < 0 ? 'far-prev' : 'far-next');
+          if (d === 0) slide.removeAttribute('aria-hidden');
+          else slide.setAttribute('aria-hidden', 'true');
+        });
+        if (current) current.textContent = index + 1;
+        if (prev) prev.disabled = index === 0;
+        if (next) next.disabled = index === slides.length - 1;
+      }
+
+      if (prev) prev.addEventListener('click', function () { go(index - 1); });
+      if (next) next.addEventListener('click', function () { go(index + 1); });
+      slides.forEach(function (slide, n) {
+        slide.addEventListener('click', function () {
+          if (n !== index && !dragged) go(n);
+        });
+      });
+      viewport.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowLeft') { go(index - 1); e.preventDefault(); }
+        else if (e.key === 'ArrowRight') { go(index + 1); e.preventDefault(); }
+      });
+
+      // Swipe / drag: follow the pointer, then snap to the nearest card.
+      var startX = 0;
+      var startY = 0;
+      var dx = 0;
+      var down = false;
+      var dragged = false;
+      var axis = '';
+      viewport.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        down = true;
+        dragged = false;
+        axis = '';
+        startX = e.clientX;
+        startY = e.clientY;
+        dx = 0;
+      });
+      viewport.addEventListener('pointermove', function (e) {
+        if (!down) return;
+        var mx = e.clientX - startX;
+        var my = e.clientY - startY;
+        if (!axis && (Math.abs(mx) > 6 || Math.abs(my) > 6)) axis = Math.abs(mx) > Math.abs(my) ? 'x' : 'y';
+        if (axis !== 'x') return;
+        dragged = true;
+        dx = mx;
+        root.classList.add('is-dragging');
+        track.style.transform = 'translateX(calc(var(--i) * (-100% - var(--gap)) + ' + dx + 'px))';
+      });
+      function end() {
+        if (!down) return;
+        down = false;
+        root.classList.remove('is-dragging');
+        track.style.transform = '';
+        if (axis === 'x' && Math.abs(dx) > 50) go(index + (dx < 0 ? 1 : -1));
+        setTimeout(function () { dragged = false; }, 0);
+      }
+      viewport.addEventListener('pointerup', end);
+      viewport.addEventListener('pointercancel', end);
+      viewport.addEventListener('pointerleave', end);
+
+      go(0);
+    });
+
     // Links to the page you are already on (Home icon / name on the home page)
     // scroll to the top instead of reloading the page.
     document.querySelectorAll('a[aria-current="page"]').forEach(function (a) {

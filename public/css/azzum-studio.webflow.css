@@ -7268,3 +7268,170 @@ body {
     margin-top: 8px;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Testimonial carousel. One card is centred; the cards either side stay in
+   view, pushed back (smaller, dimmed, softly blurred) so they read as "more to
+   come". Moving the carousel slides the track and animates each card between
+   those states, and the incoming card's text settles in just after it lands.
+   Cards use the same flat tile as the capability cards.
+   ------------------------------------------------------------------------ */
+.hero-7.btm {
+  overflow-x: clip;
+}
+
+.tcarousel {
+  --gap: 16px;
+  --ease: cubic-bezier(.22, .8, .2, 1);
+  align-self: stretch;
+  touch-action: pan-y;
+}
+
+.tcarousel-viewport {
+  outline: none;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.tcarousel.is-dragging .tcarousel-viewport {
+  cursor: grabbing;
+}
+
+.tcarousel-viewport:focus-visible {
+  outline: 1px solid rgba(244, 243, 238, .4);
+  outline-offset: 6px;
+  border-radius: var(--radius-image);
+}
+
+.tcarousel-track {
+  display: flex;
+  align-items: stretch;
+  gap: var(--gap);
+  transform: translateX(calc(var(--i, 0) * (-100% - var(--gap))));
+  transition: transform .8s var(--ease);
+}
+
+.tcarousel.is-dragging .tcarousel-track {
+  transition: none;
+}
+
+.tcarousel-slide {
+  flex: 0 0 100%;
+  justify-content: flex-start;
+  min-width: 0;
+  padding: 24px 22px 28px;
+  border-radius: var(--radius-image);
+  background-color: #111111;
+  transform-origin: center;
+  transition:
+    opacity .7s var(--ease),
+    transform .8s var(--ease),
+    filter .7s var(--ease);
+}
+
+.tcarousel-slide[data-pos="active"] {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+.tcarousel-slide[data-pos="prev"],
+.tcarousel-slide[data-pos="next"] {
+  opacity: .28;
+  filter: blur(2.5px);
+  cursor: pointer;
+}
+
+.tcarousel-slide[data-pos="prev"] {
+  transform: scale(.94) translateX(2%);
+}
+
+.tcarousel-slide[data-pos="next"] {
+  transform: scale(.94) translateX(-2%);
+}
+
+.tcarousel-slide[data-pos="far-prev"],
+.tcarousel-slide[data-pos="far-next"] {
+  opacity: .1;
+  filter: blur(4px);
+  transform: scale(.9);
+}
+
+/* The text of the card that just arrived rises and sharpens a beat after the
+   card itself lands. */
+.tcarousel-slide > * {
+  transition: opacity .6s var(--ease) .12s, transform .7s var(--ease) .12s, filter .6s var(--ease) .12s;
+}
+
+.tcarousel-slide:not([data-pos="active"]) > * {
+  transition-delay: 0s;
+}
+
+.tcarousel-slide[data-pos="active"] > * {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+.tcarousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.tcarousel-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background-color: rgba(244, 243, 238, .14);
+  color: var(--white);
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: background-color .2s ease, opacity .2s ease, transform .2s ease;
+}
+
+.tcarousel-btn:hover:not(:disabled) {
+  background-color: rgba(244, 243, 238, .24);
+}
+
+.tcarousel-btn:active:not(:disabled) {
+  transform: scale(.94);
+}
+
+.tcarousel-btn:disabled {
+  opacity: .3;
+  cursor: default;
+}
+
+.tcarousel-btn:focus-visible {
+  outline: 1px solid var(--white);
+  outline-offset: 2px;
+}
+
+.tcarousel-count {
+  min-width: 48px;
+  color: var(--white);
+  font-family: Ppfraktionmono, sans-serif;
+  font-size: .6875rem;
+  line-height: 1.2;
+  text-align: center;
+  opacity: var(--dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tcarousel-track,
+  .tcarousel-slide,
+  .tcarousel-slide > * {
+    transition-duration: .01s;
+    transition-delay: 0s;
+  }
+}
