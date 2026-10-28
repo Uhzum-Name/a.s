@@ -7253,13 +7253,13 @@ body {
    with the others. */
 @media screen and (min-width: 992px) {
   .capabilities-columns {
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: auto auto auto 1fr;
     row-gap: 6px;
   }
 
   .capabilities-columns > .div-block-24 {
     display: grid;
-    grid-row: span 3;
+    grid-row: span 4;
     grid-template-rows: subgrid;
     row-gap: 6px;
   }
@@ -7555,4 +7555,22 @@ body {
 .hero-7.btm .hero-grid > .capabilities-intro {
   align-self: center;
   text-align: center;
+}
+
+/* Capability card icon: a dotted graphic at the top of the card. Every card
+   has the icon row (empty until its icon is added) so the eyebrows, titles and
+   copy still line up across the three cards; stacked on narrow screens the
+   empty ones are dropped. */
+.capabilities-icon {
+  display: block;
+  width: 112px;
+  max-width: none;
+  height: 112px;
+  margin-bottom: 14px;
+}
+
+@media screen and (max-width: 991px) {
+  div.capabilities-icon {
+    display: none;
+  }
 }
