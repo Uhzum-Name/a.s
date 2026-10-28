@@ -7530,6 +7530,14 @@ body {
   list-style: none !important;
 }
 
+/* The text lives in its own span: the typewriter script splits it into word
+   spans, which would each become a flex item if they were direct children of
+   the li (huge gaps, no wrapping). */
+.engagement-list li > .body-large {
+  flex: 1;
+  min-width: 0;
+}
+
 /* A drawn dot rather than a glyph, so it renders the same in every font. */
 .engagement-list li::before {
   content: "";
