@@ -7216,16 +7216,55 @@ body {
   margin-top: 16px;
 }
 
-.capabilities-headline {
-  color: var(--white);
-  font-family: Ppneuemontreal, sans-serif;
-  font-size: 1.25rem;
-  font-weight: 400;
-  line-height: 1.15;
-}
-
 @media screen and (max-width: 991px) {
   .capabilities-columns {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Capability cards: minimal-tech tiles. Flat graphite panels with the
+   site image radius and no border or shadow, separated by a plain gap so the black page
+   reads as the grid lines. Type is two mono lines: a dimmed discipline eyebrow
+   over a full-strength title (same pairing as the name / role line under the
+   page name), then the body in the regular sans.
+   ------------------------------------------------------------------------ */
+.capabilities-columns > .div-block-24 {
+  gap: 6px;
+  padding: 24px 22px 28px;
+  border-radius: var(--radius-image);
+  background-color: #111111;
+}
+
+.capabilities-columns > .div-block-24 > .body-large {
+  margin-top: 14px;
+}
+
+.capabilities-columns {
+  gap: 16px;
+}
+
+.capabilities-columns > .div-block-24 > .body-large {
+  font-size: 14px;
+}
+
+/* Side by side, the three cards share their rows (eyebrow / title / body), so
+   a longer eyebrow that wraps in one card cannot push its title out of line
+   with the others. */
+@media screen and (min-width: 992px) {
+  .capabilities-columns {
+    grid-template-rows: auto auto 1fr;
+    row-gap: 6px;
+  }
+
+  .capabilities-columns > .div-block-24 {
+    display: grid;
+    grid-row: span 3;
+    grid-template-rows: subgrid;
+    row-gap: 6px;
+  }
+
+  .capabilities-columns > .div-block-24 > .body-large {
+    margin-top: 8px;
   }
 }
