@@ -346,6 +346,19 @@
         if (current) current.textContent = index + 1;
         if (prev) prev.disabled = index === 0;
         if (next) next.disabled = index === slides.length - 1;
+        fit();
+      }
+
+      // Cards hug their own text, so the viewport follows the active card's
+      // height; the controls below move with it and no card has empty space.
+      function fit() {
+        viewport.style.height = slides[index].offsetHeight + 'px';
+      }
+      window.addEventListener('resize', fit);
+      window.addEventListener('load', fit);
+      if (window.ResizeObserver) {
+        new ResizeObserver(fit).observe(slides[0].parentNode);
+        slides.forEach(function (slide) { new ResizeObserver(fit).observe(slide); });
       }
 
       if (prev) prev.addEventListener('click', function () { go(index - 1); });

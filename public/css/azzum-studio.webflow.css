@@ -7288,6 +7288,8 @@ body {
 }
 
 .tcarousel-viewport {
+  overflow-y: clip;
+  transition: height .6s var(--ease);
   outline: none;
   cursor: grab;
   user-select: none;
@@ -7306,7 +7308,7 @@ body {
 
 .tcarousel-track {
   display: flex;
-  align-items: stretch;
+  align-items: flex-start;
   gap: var(--gap);
   transform: translateX(calc(var(--i, 0) * (-100% - var(--gap))));
   transition: transform .8s var(--ease);
