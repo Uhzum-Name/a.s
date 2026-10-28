@@ -349,16 +349,21 @@
         fit();
       }
 
-      // Cards hug their own text, so the viewport follows the active card's
-      // height; the controls below move with it and no card has empty space.
+      // Cards hug their own text, but the viewport is always as tall as the
+      // tallest card, so the controls below (and the rest of the page) stay put
+      // however long the active testimonial is.
       function fit() {
-        viewport.style.height = slides[index].offsetHeight + 'px';
+        var tallest = 0;
+        slides.forEach(function (slide) {
+          tallest = Math.max(tallest, slide.offsetHeight);
+        });
+        viewport.style.height = tallest + 'px';
       }
       window.addEventListener('resize', fit);
       window.addEventListener('load', fit);
       if (window.ResizeObserver) {
-        new ResizeObserver(fit).observe(slides[0].parentNode);
-        slides.forEach(function (slide) { new ResizeObserver(fit).observe(slide); });
+        var ro = new ResizeObserver(fit);
+        slides.forEach(function (slide) { ro.observe(slide); });
       }
 
       if (prev) prev.addEventListener('click', function () { go(index - 1); });

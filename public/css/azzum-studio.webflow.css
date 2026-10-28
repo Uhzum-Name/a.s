@@ -7288,8 +7288,6 @@ body {
 }
 
 .tcarousel-viewport {
-  overflow-y: clip;
-  transition: height .6s var(--ease);
   outline: none;
   cursor: grab;
   user-select: none;
@@ -7436,4 +7434,14 @@ body {
     transition-duration: .01s;
     transition-delay: 0s;
   }
+}
+
+/* Capabilities header: the subheader sits close under the title (about 12px)
+   instead of a full grid gap away. */
+.capabilities-title {
+  margin-bottom: 0;
+}
+
+.capabilities-intro {
+  margin-top: -4px;
 }
