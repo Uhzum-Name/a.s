@@ -7733,8 +7733,8 @@ div.capabilities-icon {
     transform: scale(.8);
   }
   16% {
-    opacity: .14;
-    transform: scale(1);
+    opacity: .161;
+    transform: scale(1.15);
   }
 }
 
