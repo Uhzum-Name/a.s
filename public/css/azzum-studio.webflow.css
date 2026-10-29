@@ -7266,9 +7266,40 @@ body {
     row-gap: 6px;
   }
 
+  /* The wide third card puts its icon beside the text rather than above it
+     (a full-width square above would be taller than the card needs). */
   .capabilities-columns > .div-block-24:nth-child(3) {
+    display: grid;
     grid-column: 1 / -1;
+    grid-template-columns: 180px minmax(0, 1fr);
+    grid-template-rows: 1fr auto auto auto;
+    column-gap: 28px;
     margin-top: 10px;
+  }
+
+  .capabilities-columns > .div-block-24:nth-child(3) > img.capabilities-icon {
+    grid-row: 1 / span 4;
+    grid-column: 1;
+    width: 180px;
+    margin: 0;
+  }
+
+  /* Text sits on the bottom rows, so it ends at the card's bottom padding like
+     the first two cards; the first row is the spare space above it. */
+  .capabilities-columns > .div-block-24:nth-child(3) > :not(img) {
+    grid-column: 2;
+  }
+
+  .capabilities-columns > .div-block-24:nth-child(3) > :nth-child(2) {
+    grid-row: 2;
+  }
+
+  .capabilities-columns > .div-block-24:nth-child(3) > :nth-child(3) {
+    grid-row: 3;
+  }
+
+  .capabilities-columns > .div-block-24:nth-child(3) > :nth-child(4) {
+    grid-row: 4;
   }
 
   .capabilities-columns > .div-block-24 > .body-large {
