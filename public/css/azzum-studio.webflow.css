@@ -7569,7 +7569,7 @@ body {
    eyebrow and title pair, fitted whole inside the card's padding. Every card
    in the top row has the icon row so the titles and copy still line up;
    stacked on narrow screens an empty one is dropped. */
-img.capabilities-icon {
+.capabilities-icon {
   display: block;
   width: 100%;
   max-width: none;
@@ -7629,6 +7629,115 @@ div.capabilities-icon {
 /* The icon's dots sit one row (24 of the icon's 400 units = 6% of its width)
    higher on the grid than the artwork's own canvas puts them. A transform, so
    the layout and the text below are unchanged. */
-.capabilities-columns > .div-block-24 > img.capabilities-icon {
+.capabilities-columns > .div-block-24 > .capabilities-icon {
   transform: translateY(calc(var(--icon-w) * -.06));
+}
+
+/* ---------------------------------------------------------------------------
+   Capability icon animation (driven by site.js). Only the lit dots (.cap-dot)
+   and their halos (.cap-halo, added by the script) animate; the dim grid never
+   does. One timing for all three cards: 300ms per dot on the site's ease-out.
+   With no script, or with reduced motion, none of this applies and the icons
+   show exactly as drawn.
+   ------------------------------------------------------------------------ */
+.capabilities-icon .cap-dot,
+.capabilities-icon .cap-halo {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.capabilities-icon .cap-halo {
+  fill: #fff;
+  opacity: 0;
+}
+
+/* Before a card plays, its lit dots look like the dim grid dots. */
+.capabilities-icon.is-armed .cap-dot {
+  fill-opacity: .14;
+}
+
+.capabilities-icon.is-playing .cap-dot {
+  animation: capdot-on 300ms cubic-bezier(.22, .8, .2, 1) var(--d, 0ms) both;
+}
+
+.capabilities-icon.is-playing .cap-halo {
+  animation: caphalo-on 300ms cubic-bezier(.22, .8, .2, 1) var(--d, 0ms) both;
+}
+
+/* The settle card: each dot also flickers briefly at a random moment first. */
+.capabilities-icon[data-dot-icon="settle"].is-playing .cap-dot {
+  animation:
+    capdot-on 300ms cubic-bezier(.22, .8, .2, 1) var(--d, 0ms) both,
+    capdot-flick 140ms linear var(--fd, 0ms) 2;
+}
+
+@keyframes capdot-on {
+  0% {
+    fill-opacity: .14;
+    transform: scale(1);
+  }
+  45% {
+    fill-opacity: 1;
+    transform: scale(1.35);
+  }
+  100% {
+    fill-opacity: var(--o, 1);
+    transform: scale(1);
+  }
+}
+
+@keyframes capdot-flick {
+  0% {
+    fill-opacity: .14;
+  }
+  50% {
+    fill-opacity: .85;
+  }
+  100% {
+    fill-opacity: .14;
+  }
+}
+
+@keyframes caphalo-on {
+  0% {
+    opacity: 0;
+    transform: scale(.6);
+  }
+  45% {
+    opacity: .26;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+
+/* The first card, once lit: a faint, slow pulse keeps moving left to right
+   along the shape (halos only, so the dots keep their designed brightness). */
+.capabilities-icon.is-pulsing .cap-halo {
+  animation: caphalo-pulse 3600ms ease-in-out var(--pd, 0ms) infinite;
+}
+
+.capabilities-icon.is-pulsing.is-offscreen .cap-halo {
+  animation-play-state: paused;
+}
+
+@keyframes caphalo-pulse {
+  0%,
+  34%,
+  100% {
+    opacity: 0;
+    transform: scale(.8);
+  }
+  16% {
+    opacity: .14;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .capabilities-icon .cap-halo {
+    display: none;
+  }
 }

@@ -420,6 +420,156 @@
       go(0);
     });
 
+    // Capability icons: only the lit dots animate (the dim grid never moves).
+    // Each lit dot gets a delay from its position, then comes on in the same
+    // way on every card: 300ms, flash to white, scale up a touch, soft halo,
+    // settle on its designed brightness. The three cards share one timing
+    // (the delays span SPAN ms), they differ only in the order:
+    //   wire   : left to right, column by column; then a faint slow pulse keeps
+    //            travelling left to right along the shape
+    //   settle : random flicker across the shape, then it settles from the
+    //            centre outward
+    //   build  : from the centre outward, ring by ring
+    // Plays once as a card scrolls into view. Reduced motion: no animation, the
+    // final shape stays as drawn in the markup.
+    (function () {
+      var icons = document.querySelectorAll('svg[data-dot-icon]');
+      if (!icons.length) return;
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var SVGNS = 'http://www.w3.org/2000/svg';
+      var DOT_MS = 300; // per dot
+      var SPAN = 1100; // delay spread, same for every card
+      var FLICKER_MS = 600; // settle card: random flicker phase
+      var LIT_MIN = 0.3; // fill-opacity at or above this counts as a lit dot
+      var CENTER = 200; // icon canvas is 400 x 400
+
+      function arm(svg) {
+        var mode = svg.getAttribute('data-dot-icon');
+        var dots = [];
+        Array.prototype.forEach.call(svg.querySelectorAll('circle'), function (c) {
+          var o = c.getAttribute('fill-opacity');
+          o = o === null ? 1 : parseFloat(o);
+          if (o < LIT_MIN) return;
+          dots.push({
+            el: c,
+            x: parseFloat(c.getAttribute('cx')),
+            y: parseFloat(c.getAttribute('cy')),
+            r: parseFloat(c.getAttribute('r')),
+            o: o,
+          });
+        });
+        if (!dots.length) return null;
+
+        var minX = Infinity;
+        var maxX = -Infinity;
+        dots.forEach(function (d) {
+          minX = Math.min(minX, d.x);
+          maxX = Math.max(maxX, d.x);
+          d.dx = d.x - CENTER;
+          d.dy = d.y - CENTER;
+        });
+        var maxManhattan = 0;
+        var maxRadial = 0;
+        dots.forEach(function (d) {
+          maxManhattan = Math.max(maxManhattan, Math.abs(d.dx) + Math.abs(d.dy));
+          maxRadial = Math.max(maxRadial, Math.sqrt(d.dx * d.dx + d.dy * d.dy));
+        });
+
+        var end = 0;
+        dots.forEach(function (d) {
+          var t; // 0..1 position along the card's order
+          var delay;
+          if (mode === 'wire') {
+            t = (d.x - minX) / (maxX - minX || 1);
+            delay = t * SPAN;
+          } else if (mode === 'build') {
+            t = (Math.abs(d.dx) + Math.abs(d.dy)) / (maxManhattan || 1); // diamond rings
+            delay = t * SPAN;
+          } else {
+            // settle: flicker first, then centre outward, finishing with the others
+            t = Math.sqrt(d.dx * d.dx + d.dy * d.dy) / (maxRadial || 1);
+            delay = FLICKER_MS + t * (SPAN - FLICKER_MS) + Math.random() * 50;
+            d.flick = Math.random() * (FLICKER_MS - 2 * 140 - 20);
+          }
+          d.t = t;
+          d.delay = delay;
+          end = Math.max(end, delay + DOT_MS);
+
+          // halo behind the dot (a circle, not a CSS filter: Safari ignores filters on SVG parts)
+          var h = document.createElementNS(SVGNS, 'circle');
+          h.setAttribute('class', 'cap-halo');
+          h.setAttribute('cx', d.x);
+          h.setAttribute('cy', d.y);
+          h.setAttribute('r', (d.r * 3.4).toFixed(2));
+          d.el.parentNode.insertBefore(h, d.el);
+          d.halo = h;
+
+          d.el.classList.add('cap-dot');
+          d.el.style.setProperty('--o', d.o);
+          d.el.style.setProperty('--d', Math.round(delay) + 'ms');
+          h.style.setProperty('--d', Math.round(delay) + 'ms');
+          if (d.flick !== undefined) d.el.style.setProperty('--fd', Math.round(d.flick) + 'ms');
+          h.style.setProperty('--pd', Math.round(d.t * 1800) + 'ms');
+        });
+
+        svg.classList.add('is-armed');
+        return end;
+      }
+
+      var ends = new Map();
+      icons.forEach(function (svg) {
+        var end = arm(svg);
+        if (end !== null) ends.set(svg, end);
+      });
+
+      function play(svg) {
+        var end = ends.get(svg);
+        svg.classList.add('is-playing');
+        setTimeout(function () {
+          // done: drop back to the markup's own state (identical to the final frame)
+          svg.classList.remove('is-playing', 'is-armed');
+          if (svg.getAttribute('data-dot-icon') === 'wire') svg.classList.add('is-pulsing');
+        }, end + 80);
+      }
+
+      if (!('IntersectionObserver' in window)) {
+        icons.forEach(function (svg) {
+          if (ends.has(svg)) {
+            svg.classList.remove('is-armed');
+          }
+        });
+        return;
+      }
+
+      var io = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            io.unobserve(entry.target);
+            play(entry.target);
+          });
+        },
+        { threshold: 0.4 }
+      );
+      icons.forEach(function (svg) {
+        if (ends.has(svg)) io.observe(svg);
+      });
+
+      // The looping pulse only runs while its card is on screen.
+      var pulseIO = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            entry.target.classList.toggle('is-offscreen', !entry.isIntersecting);
+          });
+        },
+        { threshold: 0 }
+      );
+      icons.forEach(function (svg) {
+        if (svg.getAttribute('data-dot-icon') === 'wire') pulseIO.observe(svg);
+      });
+    })();
+
     // Links to the page you are already on (Home icon / name on the home page)
     // scroll to the top instead of reloading the page.
     document.querySelectorAll('a[aria-current="page"]').forEach(function (a) {
