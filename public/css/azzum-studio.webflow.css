@@ -7585,10 +7585,16 @@ img.capabilities-icon {
   object-position: 50% 30%;
 }
 
-/* The dotted icon's art sits in the upper part of its canvas; icons drawn
-   centred on their canvas are cropped from the middle instead. */
-img.capabilities-icon-centered {
-  object-position: 50% 50%;
+/* The card 2 illustration is a different shape (270:158), so it is fitted whole
+   inside the icon area, and unlike the dotted icon it stays within the card's
+   padding (no bleed to the card edges). The box stretches to the icon row's
+   height; the drawing is centred in it. */
+img.capabilities-icon-contain {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  margin-inline: 0;
+  object-fit: contain;
 }
 
 div.capabilities-icon {
