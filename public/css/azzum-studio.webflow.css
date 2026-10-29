@@ -7248,66 +7248,29 @@ body {
   font-size: 14px;
 }
 
-/* Bento: the first two cards sit side by side and share their rows (icon /
-   eyebrow / title / copy), so a longer eyebrow that wraps in one cannot push
-   its title out of line with the other. The third card runs the full width
-   underneath. */
+/* Three across: the capability cards sit side by side in one row, and the row
+   is wider than the 680px text column (up to 1180px, 24px from the screen
+   edges on narrower screens) so the cards are not squeezed. The three share
+   their rows (icon / eyebrow / title / copy), so a longer eyebrow that wraps in
+   one cannot push its title out of line with the others. */
 @media screen and (min-width: 992px) {
   .capabilities-columns {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-rows: auto auto auto 1fr auto;
+    align-self: center;
+    width: min(1180px, calc(100vw - 48px));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: auto auto auto 1fr;
     row-gap: 6px;
   }
 
-  .capabilities-columns > .div-block-24:nth-child(-n + 2) {
+  .capabilities-columns > .div-block-24 {
     display: grid;
     grid-row: span 4;
     grid-template-rows: subgrid;
     row-gap: 6px;
   }
 
-  /* The wide third card puts its icon beside the text rather than above it
-     (a full-width square above would be taller than the card needs). */
-  .capabilities-columns > .div-block-24:nth-child(3) {
-    display: grid;
-    grid-column: 1 / -1;
-    grid-template-columns: 180px minmax(0, 1fr);
-    grid-template-rows: 1fr auto auto auto;
-    column-gap: 28px;
-    margin-top: 10px;
-  }
-
-  .capabilities-columns > .div-block-24:nth-child(3) > img.capabilities-icon {
-    grid-row: 1 / span 4;
-    grid-column: 1;
-    width: 180px;
-    margin: 0;
-  }
-
-  /* Text sits on the bottom rows, so it ends at the card's bottom padding like
-     the first two cards; the first row is the spare space above it. */
-  .capabilities-columns > .div-block-24:nth-child(3) > :not(img) {
-    grid-column: 2;
-  }
-
-  .capabilities-columns > .div-block-24:nth-child(3) > :nth-child(2) {
-    grid-row: 2;
-  }
-
-  .capabilities-columns > .div-block-24:nth-child(3) > :nth-child(3) {
-    grid-row: 3;
-  }
-
-  .capabilities-columns > .div-block-24:nth-child(3) > :nth-child(4) {
-    grid-row: 4;
-  }
-
   .capabilities-columns > .div-block-24 > .body-large {
     margin-top: 8px;
-  }
-
-  .capabilities-columns > .div-block-24:nth-child(3) > .body-large {
-    max-width: 60ch;
   }
 }
 
