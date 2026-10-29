@@ -7288,7 +7288,10 @@ body {
 .tcarousel {
   --gap: 16px;
   --ease: cubic-bezier(.22, .8, .2, 1);
-  align-self: stretch;
+  /* 20% narrower than the 680px text column (no change on phones, where the
+     column is already narrower than this). */
+  align-self: center;
+  width: min(544px, 100%);
   touch-action: pan-y;
 }
 
