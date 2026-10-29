@@ -7568,32 +7568,17 @@ body {
   text-align: center;
 }
 
-/* Capability card icon: a dotted graphic at the top of the card, above the eyebrow and title pair,
-   running the full width of the card (it bleeds out through the card padding).
-   It is cropped to 200:168 from the top of its square canvas, which only trims the
-   empty margin around the dots. Every card has the icon row (empty until its
-   icon is added) so the titles and copy still line up across the three cards;
-   stacked on narrow screens the empty ones are dropped. */
+/* Capability card icons: square artwork at the top of the card, above the
+   eyebrow and title pair, fitted whole inside the card's padding. Every card
+   in the top row has the icon row so the titles and copy still line up;
+   stacked on narrow screens an empty one is dropped. */
 img.capabilities-icon {
   display: block;
-  width: calc(100% + 44px);
+  width: 100%;
   max-width: none;
   height: auto;
-  aspect-ratio: 200 / 168;
-  margin: 0 -22px 8px;
-  object-fit: cover;
-  object-position: 50% 30%;
-}
-
-/* The card 2 illustration is a different shape (270:158), so it is fitted whole
-   inside the icon area, and unlike the dotted icon it stays within the card's
-   padding (no bleed to the card edges). The box stretches to the icon row's
-   height; the drawing is centred in it. */
-img.capabilities-icon-contain {
-  width: 100%;
-  height: 100%;
-  aspect-ratio: auto;
-  margin-inline: 0;
+  aspect-ratio: 1;
+  margin: 0 0 8px;
   object-fit: contain;
 }
 
