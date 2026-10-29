@@ -425,11 +425,13 @@
     // way on every card: 300ms, flash to white, scale up a touch, soft halo,
     // settle on its designed brightness. The three cards share one timing
     // (the delays span SPAN ms), they differ only in the order:
-    //   wire   : left to right, column by column; then a faint slow pulse keeps
-    //            travelling left to right along the shape
+    //   wire   : left to right, column by column
     //   settle : random flicker across the shape, then it settles from the
     //            centre outward
     //   build  : from the centre outward, ring by ring
+    // Once lit, every card keeps a faint, slow pulse going (same timing on all
+    // three) that travels in the card's own direction: left to right along the
+    // wire, outward from the centre for the square and the diamond.
     // Plays once as a card scrolls into view. Reduced motion: no animation, the
     // final shape stays as drawn in the markup.
     (function () {
@@ -529,7 +531,7 @@
         setTimeout(function () {
           // done: drop back to the markup's own state (identical to the final frame)
           svg.classList.remove('is-playing', 'is-armed');
-          if (svg.getAttribute('data-dot-icon') === 'wire') svg.classList.add('is-pulsing');
+          svg.classList.add('is-pulsing');
         }, end + 80);
       }
 
@@ -566,7 +568,7 @@
         { threshold: 0 }
       );
       icons.forEach(function (svg) {
-        if (svg.getAttribute('data-dot-icon') === 'wire') pulseIO.observe(svg);
+        pulseIO.observe(svg);
       });
     })();
 

@@ -7713,8 +7713,10 @@ div.capabilities-icon {
   }
 }
 
-/* The first card, once lit: a faint, slow pulse keeps moving left to right
-   along the shape (halos only, so the dots keep their designed brightness). */
+/* Once lit, every card keeps a faint, slow pulse going (halos only, so the dots
+   keep their designed brightness). The delay per halo (--pd) follows the card's
+   own order, so it moves left to right on the wire and outward from the centre
+   on the square and the diamond. */
 .capabilities-icon.is-pulsing .cap-halo {
   animation: caphalo-pulse 3600ms ease-in-out var(--pd, 0ms) infinite;
 }
