@@ -7585,3 +7585,47 @@ div.capabilities-icon {
     display: none;
   }
 }
+
+/* Capability cards: the icon's faint dot grid continues across the whole card
+   as a background behind the icon. The dots sit on the same grid as the icon's (pitch is 6% of
+   the icon width, dot radius 0.6%) and are offset so they line up with it
+   exactly. --icon-w is the icon's width, worked out from the width of the row
+   (the row is the size container, so the cards' own subgrid layout is left
+   alone). */
+.capabilities-columns {
+  container-type: inline-size;
+  --icon-w: calc(100cqw - 44px);
+}
+
+@media screen and (min-width: 992px) {
+  .capabilities-columns {
+    --icon-w: calc((100cqw - 32px) / 3 - 44px);
+  }
+}
+
+.capabilities-columns > .div-block-24 {
+  position: relative;
+  isolation: isolate;
+}
+
+.capabilities-columns > .div-block-24::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  /* Only the band the icon sits in: from the top of the card to just below the
+     icon's last row of dots, so nothing is drawn behind the text. */
+  height: calc(24px + var(--icon-w) * .95);
+  z-index: -1;
+  border-radius: var(--radius-image) var(--radius-image) 0 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(244, 243, 238, .14) calc(var(--icon-w) * .006), rgba(244, 243, 238, 0) calc(var(--icon-w) * .007));
+  background-size: calc(var(--icon-w) * .06) calc(var(--icon-w) * .06);
+  background-position: calc(22px - var(--icon-w) * .01) calc(24px - var(--icon-w) * .01);
+}
+
+/* The icon's dots sit one row (24 of the icon's 400 units = 6% of its width)
+   higher on the grid than the artwork's own canvas puts them. A transform, so
+   the layout and the text below are unchanged. */
+.capabilities-columns > .div-block-24 > img.capabilities-icon {
+  transform: translateY(calc(var(--icon-w) * -.06));
+}
