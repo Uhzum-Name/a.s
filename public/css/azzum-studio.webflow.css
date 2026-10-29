@@ -7249,14 +7249,14 @@ body {
 }
 
 /* Three across: the capability cards sit side by side in one row, and the row
-   is wider than the 680px text column (up to 1180px, 24px from the screen
+   is wider than the 680px text column (up to 944px, 24px from the screen
    edges on narrower screens) so the cards are not squeezed. The three share
    their rows (icon / eyebrow / title / copy), so a longer eyebrow that wraps in
    one cannot push its title out of line with the others. */
 @media screen and (min-width: 992px) {
   .capabilities-columns {
     align-self: center;
-    width: min(1180px, calc(100vw - 48px));
+    width: min(944px, calc(100vw - 48px));
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-rows: auto auto auto 1fr;
     row-gap: 6px;
